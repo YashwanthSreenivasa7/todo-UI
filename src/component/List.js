@@ -17,7 +17,7 @@ export class List extends Component {
         <div className="card-body">
           <h5 className="card-title">{this.props.obj.task}</h5>
           <p className="card-text">
-            Some quick example text description :{this.props.obj.desc1}.
+            Some quick example text description : {this.props.obj.desc1}.
           </p>
           <button
             onClick={this.handleClick.bind(this, this.props.obj.TaskID)}

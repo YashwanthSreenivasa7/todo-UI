@@ -24,6 +24,17 @@ class Data extends Component {
 
   deleteItem(id1) {
     debugger;
+    console.log(`http://localhost:4000/products/delete/${id1}`);
+    fetch(`http://localhost:4000/products/delete/${id1}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(this.getProducts)
+      .catch(err => console.log(err));
+    /*
     const n = this.state.product.length;
     let li = this.state.product;
 
@@ -37,10 +48,11 @@ class Data extends Component {
     li.splice(r, 1);
     if (n === 1) li = [];
     this.setState({ product: li });
+    */
   }
   getProducts = () => {
     debugger;
-    fetch("http://localhost:4000/products")
+    fetch(`http://localhost:4000/products/${Number(localStorage["id"])}`)
       .then(response => response.json())
       .then(response => this.setState({ product: response.data }))
       .catch(err => console.log(err));
@@ -58,7 +70,7 @@ class Data extends Component {
     console.log(JSON.stringify(prod));
     //`http://localhost:4000/products/add?name=${prod.name}&price=${prod.price}`
 
-    fetch("http://localhost:4000/products/post/", {
+    fetch(`http://localhost:4000/products/post/${Number(localStorage["id"])}`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -112,7 +124,7 @@ class Data extends Component {
                 />
               </div>
               <button className=".btn .btn-primary" onClick={this.addProduct}>
-                Submit !
+                Add Task !
               </button>
             </form>
           </div>

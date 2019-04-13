@@ -61,6 +61,7 @@ class Form extends Component {
     if (response && response.data && response.data.length > 0) {
       localStorage.setItem("emailId", this.state.emailId);
       localStorage.setItem("pass", this.state.password);
+      localStorage.setItem("id", response.data[0].id);
       localStorage.setItem("loggedIn", "true");
       console.log("loggedIn : true");
       this.setState({ loggedIn: "true" });
