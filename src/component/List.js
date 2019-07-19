@@ -14,20 +14,33 @@ export class List extends Component {
   render() {
     return (
       <div className="card">
+        <h4 className="card-header text-left">Task : {this.props.obj.tname}</h4>
         <div className="card-body">
-          <h5 className="card-title">{this.props.obj.tname}</h5>
-          <p className="card-text">
+          <p className="card-text text-left">
            Task description : {this.props.obj.tdesc}.
           </p>
-          <p className="card-text">
-           Created on : {this.props.obj.task_Date.slice(0,10)}.
+          <p className="card-subtitle text-left">
+           Created on : {this.props.obj.task_Date.slice(0,10)}
           </p>
+          <div class="container">
+          <div class="row">
+          <div class="col-md-6 ">
+          <button
+            className="btn btn-success btn-md center-block"
+          >
+            Edit
+          </button>
+          </div>
+          <div class="col-md-6">
           <button
             onClick={this.handleClick.bind(this, this.props.obj.tid)}
-            className="btn btn-primary"
+            className="btn btn-danger btn-md center-block"
           >
             Delete
           </button>
+          </div>
+          </div>
+          </div>
         </div>
       </div>
     );
