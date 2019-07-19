@@ -15,12 +15,15 @@ export class List extends Component {
     return (
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title">{this.props.obj.task}</h5>
+          <h5 className="card-title">{this.props.obj.tname}</h5>
           <p className="card-text">
-            Some quick example text description : {this.props.obj.desc1}.
+           Task description : {this.props.obj.tdesc}.
+          </p>
+          <p className="card-text">
+           Created on : {this.props.obj.task_Date.slice(0,10)}.
           </p>
           <button
-            onClick={this.handleClick.bind(this, this.props.obj.TaskID)}
+            onClick={this.handleClick.bind(this, this.props.obj.tid)}
             className="btn btn-primary"
           >
             Delete

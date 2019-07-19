@@ -49,7 +49,7 @@ class Form extends Component {
   getProducts = () => {
     debugger;
     fetch(
-      `http://localhost:4000/users/${this.state.emailId}/${this.state.password}`
+      `http://localhost:8080/todo/get/user/${this.state.emailId}/${this.state.password}`
     )
       .then(response => response.json())
       .then(response => this.redirect(response))
@@ -58,17 +58,17 @@ class Form extends Component {
 
   redirect(response) {
     debugger;
-    if (response && response.data && response.data.length > 0) {
+    if (response && response[0] && response.length > 0) {
       localStorage.setItem("emailId", this.state.emailId);
       localStorage.setItem("pass", this.state.password);
-      localStorage.setItem("id", response.data[0].id);
+      localStorage.setItem("id", response[0].uid);
       localStorage.setItem("loggedIn", "true");
       console.log("loggedIn : true");
       this.setState({ loggedIn: "true" });
     } else {
-      console.log("loggedIn : false");
+      //console.log("loggedIn : false");
       localStorage.setItem("loggedIn", "false");
-      debugger;
+      //debugger;
     }
   }
 
@@ -84,7 +84,7 @@ class Form extends Component {
         <div className="login">
           <div className="sidenav">
             <div className="login-main-text">
-              <h2> TODO Application Login Page</h2>
+              <h2> TODO Application <br/>Login Page</h2>
             </div>
           </div>
           <div className="main">
