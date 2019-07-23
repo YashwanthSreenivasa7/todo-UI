@@ -27,12 +27,13 @@ class Data extends Component {
 
   deleteItem(id1) {
     debugger;
-    console.log(`http://localhost:4000/products/delete/${id1}`);
-    fetch(`http://localhost:8080/todo/delete/task/${id1}`, {
+    console.log(`http://localhost:8080/todo/tasks/${Number(localStorage["userId"])}/${id1}`);
+    fetch(`http://localhost:8080/todo/tasks/${Number(localStorage["userId"])}/${id1}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "token":localStorage["Token"]
       }
     })
       .then(this.getProducts)
@@ -60,13 +61,24 @@ class Data extends Component {
 
   getProducts = () => {
     debugger;
-    fetch(`http://localhost:8080/todo/get/tasks/${Number(localStorage["id"])}`)  
+    fetch(`http://localhost:8080/todo/tasks/${Number(localStorage["userId"])}`, {
+      method: 'GET',
+      headers: {
+          "token":localStorage["Token"]
+      }
+  })
     .then(response => response.json())
-      .then(response => this.setState({ product: response }))
+      .then(response => this.setState({ product: response.tasks}))
       .catch(err => console.log(err));
   };
   logout = event => {
     debugger;
+    fetch(`http://localhost:8080/todo/Logout/${Number(localStorage["userId"])}`, {
+      method: 'GET',
+      headers: {
+          "token":localStorage["Token"]
+      }
+  })
     localStorage["loggedIn"] = "false";
     console.log("logging out");
     this.setState({ loggedIn: "false" });
@@ -79,15 +91,14 @@ class Data extends Component {
     const pack={
       "tname":prod.tname,
       "tdesc":prod.tdesc,
-      "uid":localStorage["id"]
+      "uid":localStorage["userId"]
     }
-    //`http://localhost:4000/products/add?name=${prod.name}&price=${prod.price}`
-
-    fetch(`http://localhost:8080/todo/post/tasks`, {
+    fetch(`http://localhost:8080/todo/tasks`, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "token":localStorage["Token"]
       },
       body: JSON.stringify(pack)
     })
@@ -137,7 +148,7 @@ class Data extends Component {
                   }
                 />
               </div>
-              <button className=".btn .btn-primary " onClick={this.addProduct}>
+              <button className="btn btn-primary " onClick={this.addProduct}>
                 Add Task !
               </button>
             </form>

@@ -48,9 +48,18 @@ class Form extends Component {
 
   getProducts = () => {
     debugger;
-    fetch(
-      `http://localhost:8080/todo/get/user/${this.state.emailId}/${this.state.password}`
-    )
+    const pack={
+      "uname":this.state.emailId,
+      "upassword":this.state.password
+    }
+    fetch(`http://localhost:8080/todo/userLogin`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(pack)
+    })
       .then(response => response.json())
       .then(response => this.redirect(response))
       .catch(err => console.log(err));
@@ -58,10 +67,9 @@ class Form extends Component {
 
   redirect(response) {
     debugger;
-    if (response && response[0] && response.length > 0) {
-      localStorage.setItem("emailId", this.state.emailId);
-      localStorage.setItem("pass", this.state.password);
-      localStorage.setItem("id", response[0].uid);
+    if (response && response.userDetails && response.userDetails.token) {
+      localStorage.setItem("userId",response.userDetails.userId);
+      localStorage.setItem("Token",response.userDetails.token);
       localStorage.setItem("loggedIn", "true");
       console.log("loggedIn : true");
       this.setState({ loggedIn: "true" });
