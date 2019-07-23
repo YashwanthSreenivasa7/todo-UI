@@ -22,8 +22,34 @@ class Data extends Component {
     };
     this.logout = this.logout.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.editItem = this.editItem.bind(this);
     this.editResponse=this.editResponse.bind(this);
   }
+
+
+  editItem(id,desc,name){
+    debugger;
+    const pack={
+      "tname":name,
+      "tdesc":desc,
+      "tid":id
+    };
+    fetch(`http://localhost:8080/todo/tasks/${Number(localStorage["userId"])}/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "token":localStorage["Token"]
+      },body: JSON.stringify(pack)
+    })
+    .then( response => {
+      if (!response.ok) { throw response }
+      return response.json() 
+      })
+      .then(this.getProducts)
+      .catch(err =>this.setState({ loggedIn: "false" }));
+  }
+
 
   deleteItem(id1) {
     debugger;
@@ -36,23 +62,12 @@ class Data extends Component {
         "token":localStorage["Token"]
       }
     })
+    .then( response => {
+      if (!response.ok) { throw response }
+      return response.json() 
+      })
       .then(this.getProducts)
-      .catch(err => console.log(err));
-    /*
-    const n = this.state.product.length;
-    let li = this.state.product;
-
-    let r = 0;
-    for (var i = 0; i < n; i++) {
-      if (li[i].TaskID === id1) {
-        r = i;
-        break;
-      }
-    }
-    li.splice(r, 1);
-    if (n === 1) li = [];
-    this.setState({ product: li });
-    */
+      .catch(err =>this.setState({ loggedIn: "false" }));
   }
 
   editResponse(res){
@@ -67,9 +82,12 @@ class Data extends Component {
           "token":localStorage["Token"]
       }
   })
-    .then(response => response.json())
+  .then( response => {
+    if (!response.ok && response.tasks) { throw response }
+    return response.json() 
+    })
       .then(response => this.setState({ product: response.tasks}))
-      .catch(err => console.log(err));
+      .catch(err =>this.setState({ loggedIn: "false" }));
   };
   logout = event => {
     debugger;
@@ -102,8 +120,12 @@ class Data extends Component {
       },
       body: JSON.stringify(pack)
     })
+    .then( response => {
+      if (!response.ok) { throw response }
+      return response.json() 
+      })
       .then(this.getProducts)
-      .catch(err => console.log(err));
+      .catch(err =>this.setState({ loggedIn: "false" }));
   };
   componentDidMount() {
     this.getProducts();
@@ -158,7 +180,7 @@ class Data extends Component {
           <div key="3" className="table-responsive">
             <div key="101">
               {product.map(item => (
-                <List obj={item} del={this.deleteItem} key={item.TaskID} />
+                <List obj={item} del={this.deleteItem} edit={this.editItem} key={item.TaskID} />
               ))}
             </div>
           </div>

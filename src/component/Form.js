@@ -56,16 +56,21 @@ class Form extends Component {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
-      },
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Credentials':'true'
+      }
+      ,credentials: 'same-origin',
       body: JSON.stringify(pack)
     })
-      .then(response => response.json())
+    .then(response => {
+      console.log(response.headers.get('set-cookie')); // undefined
+      console.log(document.cookie); // nope
+      return response.json();})
       .then(response => this.redirect(response))
       .catch(err => console.log(err));
   };
 
-  redirect(response) {
+  redirect(response,head) {
     debugger;
     if (response && response.userDetails && response.userDetails.token) {
       localStorage.setItem("userId",response.userDetails.userId);
